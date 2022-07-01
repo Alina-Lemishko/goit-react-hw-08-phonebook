@@ -1,8 +1,8 @@
 import { Component } from 'react';
-
 import ContactForm from 'components/ContactForm/ContactForm';
 import Filter from 'components/Filter/Filter';
 import ContactList from 'components/ContactList/ContactList';
+import s from './App.module.css';
 
 class App extends Component {
   state = {
@@ -10,21 +10,22 @@ class App extends Component {
     filter: '',
   };
 
+  checkForDuplicate = name => {
+    const { contacts } = this.state;
+    return contacts.some(contact => contact.name === name);
+  };
+
   contactFormSubmit = contact => {
+    const isInclude = this.checkForDuplicate(contact.name);
+
+    if (isInclude) {
+      alert(`${contact.name} is already in contacts`);
+      return;
+    }
+
     this.setState(({ contacts }) => ({
       contacts: [...contacts, contact],
     }));
-  };
-
-  filterContactList = () => {
-    const { contacts, filter } = this.state;
-
-    if (filter) {
-      return contacts.filter(contact =>
-        contact.name.toLowerCase().includes(filter.toLowerCase())
-      );
-    }
-    return contacts;
   };
 
   filterValueChanger = e => {
@@ -39,19 +40,20 @@ class App extends Component {
   };
 
   render() {
-    return (
-      <div>
-        <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.contactFormSubmit} />
+    const { filter, contacts } = this.state;
+    const { contactFormSubmit, filterValueChanger, onContactDelete } = this;
 
-        <h2>Contacts</h2>
-        <Filter
-          filterValue={this.state.filter}
-          filterValueChanger={this.filterValueChanger}
-        />
+    return (
+      <div className={s.container}>
+        <h1 className={s.title}>Phonebook</h1>
+        <ContactForm onSubmit={contactFormSubmit} />
+
+        <h2 className={s.contactsTitle}>Contacts</h2>
+        <Filter filterValue={filter} filterValueChanger={filterValueChanger} />
         <ContactList
-          contacts={this.filterContactList}
-          onDelete={this.onContactDelete}
+          contacts={contacts}
+          filter={filter}
+          onDelete={onContactDelete}
         />
       </div>
     );

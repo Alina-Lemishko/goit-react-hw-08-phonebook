@@ -1,0 +1,23 @@
+.filterLabel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.filterInput {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: rgb(236, 233, 233);
+  outline-color: rgb(250, 225, 192);
+  border: none;
+}
