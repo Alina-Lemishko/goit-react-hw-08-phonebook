@@ -1,81 +1,54 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import ContactForm from 'components/ContactForm/ContactForm';
 import Filter from 'components/Filter/Filter';
 import ContactList from 'components/ContactList/ContactList';
 import s from './App.module.css';
 
-class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+export default function App() {
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(window.localStorage.getItem('contacts')) ?? '';
+  });
+  const [filter, setFilter] = useState('');
 
-  componentDidMount() {
-    const storagedContacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(storagedContacts);
+  useEffect(() => {
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const prevContacts = prevState.contacts;
-    const nextContacts = this.state.contacts;
-
-    if (prevContacts !== nextContacts) {
-      localStorage.setItem('contacts', JSON.stringify(nextContacts));
-    }
-  }
-
-  checkForDuplicate = name => {
-    const { contacts } = this.state;
-    return contacts.some(contact => contact.name === name);
-  };
-
-  contactFormSubmit = contact => {
-    const isInclude = this.checkForDuplicate(contact.name);
+  const contactFormSubmit = contact => {
+    const isInclude = checkForDuplicate(contact.name);
 
     if (isInclude) {
       alert(`${contact.name} is already in contacts`);
       return;
     }
 
-    this.setState(({ contacts }) => ({
-      contacts: [...contacts, contact],
-    }));
+    setContacts([...contacts, contact]);
   };
 
-  filterValueChanger = e => {
-    const { value } = e.target;
-    this.setState({ filter: value });
+  const checkForDuplicate = name => {
+    return contacts.some(contact => contact.name === name);
   };
 
-  onContactDelete = contactId => {
-    this.setState(({ contacts }) => ({
-      contacts: contacts.filter(el => el.id !== contactId),
-    }));
+  const filterValueChanger = ({ target: { value } }) => {
+    setFilter(value);
   };
 
-  render() {
-    const { filter, contacts } = this.state;
-    const { contactFormSubmit, filterValueChanger, onContactDelete } = this;
+  const onContactDelete = contactId => {
+    setContacts(contacts => contacts.filter(el => el.id !== contactId));
+  };
 
-    return (
-      <div className={s.container}>
-        <h1 className={s.title}>Phonebook</h1>
-        <ContactForm onSubmit={contactFormSubmit} />
+  return (
+    <div className={s.container}>
+      <h1 className={s.title}>Phonebook</h1>
+      <ContactForm onSubmit={contactFormSubmit} />
 
-        <h2 className={s.contactsTitle}>Contacts</h2>
-        <Filter filterValue={filter} filterValueChanger={filterValueChanger} />
-        <ContactList
-          contacts={contacts}
-          filter={filter}
-          onDelete={onContactDelete}
-        />
-      </div>
-    );
-  }
+      <h2 className={s.contactsTitle}>Contacts</h2>
+      <Filter filterValue={filter} filterValueChanger={filterValueChanger} />
+      <ContactList
+        contacts={contacts}
+        filter={filter}
+        onDelete={onContactDelete}
+      />
+    </div>
+  );
 }
-
-export default App;
