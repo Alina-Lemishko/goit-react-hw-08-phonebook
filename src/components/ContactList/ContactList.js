@@ -10,7 +10,7 @@ const ContactList = () => {
 
   return (
     <ul className={s.contactList}>
-      {contactsList.map(el => {
+      {contactsList?.map(el => {
         return (
           <li
             className={s.contactListItem}
