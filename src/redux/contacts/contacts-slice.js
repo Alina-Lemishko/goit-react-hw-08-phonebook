@@ -32,7 +32,7 @@ const contactsSlice = createSlice({
     }),
     [operations.addContact.fulfilled]: (store, { payload }) => {
       store.loading = false;
-      store.items.unshift(payload);
+      store.items.push(payload);
     },
     [operations.addContact.rejected]: (store, { payload }) => {
       store.loading = false;
