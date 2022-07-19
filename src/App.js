@@ -1,4 +1,4 @@
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect, useMemo } from 'react';
 import ContactForm from 'components/ContactForm/ContactForm';
 import Filter from 'components/Filter/Filter';
@@ -15,9 +15,9 @@ import s from './App.module.css';
 export default function App() {
   const [filter, setFilter] = useState('');
 
-  const contacts = useSelector(contactSelector, shallowEqual);
-  const loading = useSelector(getLoading, shallowEqual);
-  const error = useSelector(getError, shallowEqual);
+  const contacts = useSelector(contactSelector);
+  const loading = useSelector(getLoading);
+  const error = useSelector(getError);
 
   const dispatch = useDispatch();
 
