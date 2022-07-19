@@ -1,27 +1,30 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getVisibleContacts } from 'redux/contacts/contacts-selectors';
-import contactsAction from 'redux/contacts/contacts-actions';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import s from './ContactList.module.css';
+import * as operations from 'redux/contacts/contacts-operations';
 
-const ContactList = () => {
-  const contactsList = useSelector(getVisibleContacts);
+const ContactList = ({ contacts }) => {
   const dispatch = useDispatch();
+
+  const removeContact = id => {
+    dispatch(operations.removeContact(id));
+  };
 
   return (
     <ul className={s.contactList}>
-      {contactsList?.map(el => {
+      {contacts?.map(el => {
         return (
           <li
             className={s.contactListItem}
             key={el.id}
             style={{ listStyle: 'none' }}
           >
-            {el.name}: <span>{el.number}</span>
+            {el.name}: <span>{el.phone}</span>
             <button
               className={s.contactListBnt}
               type="button"
-              onClick={() => dispatch(contactsAction.contactDelete(el.id))}
+              onClick={() => dispatch(() => removeContact(el.id))}
             >
               Delete
             </button>
@@ -33,3 +36,7 @@ const ContactList = () => {
 };
 
 export default ContactList;
+
+ContactList.propTypes = {
+  contacts: PropTypes.array.isRequired,
+};
