@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { Notify } from 'notiflix';
 
 import * as API from '../../services/contacts-api';
 
@@ -31,9 +32,10 @@ export const addContact = createAsyncThunk(
       } = getState();
       const duplicate = items.some(contact => contact.name === data.name);
       if (duplicate) {
-        alert(`${data.name} is already in contacts`);
+        Notify.failure(`${data.name} is already in contacts`);
         return false;
       }
+      Notify.success(`${data.name} was added in contacts`);
       return data;
     },
   }

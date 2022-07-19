@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import s from './ContactList.module.css';
 import * as operations from 'redux/contacts/contacts-operations';
+import { Notify } from 'notiflix';
 
 const ContactList = ({ contacts }) => {
   const dispatch = useDispatch();
@@ -24,7 +25,10 @@ const ContactList = ({ contacts }) => {
             <button
               className={s.contactListBnt}
               type="button"
-              onClick={() => dispatch(() => removeContact(el.id))}
+              onClick={() => {
+                Notify.info(`${el.name} was deleted from contacts`);
+                dispatch(() => removeContact(el.id));
+              }}
             >
               Delete
             </button>

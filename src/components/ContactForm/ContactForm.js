@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import * as operations from '../../redux/contacts/contacts-operations';
 import s from './ContactForm.module.css';
 
@@ -23,6 +24,7 @@ export default function ContactForm() {
     e.preventDefault();
 
     addContact({ name, phone, id: nanoid() });
+    // Notify.info(`You added contact ${name}`);
 
     handleReset();
   };
