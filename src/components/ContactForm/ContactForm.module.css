@@ -1,45 +1,30 @@
-.formWrap {
-  width: 300px;
-  margin: 0 auto;
+.form {
+  width: 540px;
+  height: 230px;
 }
 
 .input {
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-family: 'Raleway', sans-serif;
+  height: 40px;
   width: 100%;
-  padding: 5px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  height: 30px;
-  border-radius: 5px;
-  background-color: rgb(236, 233, 233);
-  outline-color: rgb(250, 225, 192);
-  border: none;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  opacity: 1;
+  text-indent: 20px;
+  transition: all 0.2s ease-in-out;
 }
 
-.label {
+.input:focus {
+  background-color: rgb(215, 215, 215);
+}
+
+label {
   font-size: 16px;
-  font-weight: 500;
-}
-
-.buttonWrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.formButton {
-  min-width: 200px;
-  height: 30px;
-  border-radius: 5px;
-  border: none;
-  background-color: rgb(236, 233, 233);
-  font-size: 16px;
-  font-weight: 500;
+  font-weight: 800;
+  opacity: 0.8;
   text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.5s linear;
-}
-
-.formButton:hover {
-  background-color: rgb(249, 244, 170);
-  transform: scale(1.05);
 }

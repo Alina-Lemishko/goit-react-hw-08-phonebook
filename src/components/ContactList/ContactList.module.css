@@ -31,8 +31,19 @@
   box-shadow: 0px 0px 10px 0px #000000;
   cursor: pointer;
   transition: transform 0.2s linear;
+  margin-left: 25px;
 }
 
 .contactListBnt:hover {
   transform: scale(1.1);
+}
+
+.title {
+  font-size: 20px;
+  color: rgb(49, 48, 61);
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 800;
+  opacity: 0.8;
+  text-transform: uppercase;
 }

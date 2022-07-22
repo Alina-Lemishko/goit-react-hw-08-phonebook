@@ -1,36 +1,40 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import ContactForm from 'components/ContactForm/ContactForm';
-import Filter from 'components/Filter/Filter';
-import ContactList from 'components/ContactList/ContactList';
-import { getError, getLoading } from 'redux/contacts/contacts-selectors';
+import { useDispatch } from 'react-redux';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+
 import * as operations from './redux/contacts/contacts-operations';
-import Loader from 'components/Loader/loader';
-import s from './App.module.css';
+import HomePage from 'pages/HomePage';
+import ContactsPage from 'pages/ContactsPage';
+import NavBar from 'components/NavBarMenu/NavBar';
+import LoginPage from 'pages/LoginPage';
+import RegisterPage from 'pages/RegisterPage';
+import { getCurrentUser } from 'redux/auth/auth-operations';
+import PrivateRoute from 'components/PrivateRoute';
+import PublicRoute from 'components/PublicRoute';
 
 export default function App() {
-  const loading = useSelector(getLoading);
-  const error = useSelector(getError);
-
   const dispatch = useDispatch();
 
-  useEffect(
-    () => {
-      dispatch(operations.fetchContacts());
-    },
-    // eslint-disable-next-line
-    []
-  );
+  useEffect(() => {
+    dispatch(getCurrentUser());
+    dispatch(operations.fetchContacts());
+  }, [dispatch]);
 
   return (
-    <div className={s.container}>
-      <h1 className={s.title}>Phonebook</h1>
-      <ContactForm />
-      <h2 className={s.contactsTitle}>Contacts</h2>
-      <Filter />
-      {loading && <Loader />}
-      {error && <p>{error.message}</p>}
-      <ContactList />
+    <div>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
+
+        <Route element={<PrivateRoute />}>
+          <Route path="/contacts" element={<ContactsPage />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </div>
   );
 }

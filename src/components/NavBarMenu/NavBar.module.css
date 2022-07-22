@@ -1,0 +1,10 @@
+.link {
+  display: inline-block;
+  text-decoration: none;
+  color: aliceblue;
+}
+
+.linkActive {
+  composes: link;
+  color: rgb(88, 255, 255);
+}

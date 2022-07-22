@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import s from './ContactList.module.css';
 import * as operations from 'redux/contacts/contacts-operations';
 import { Notify } from 'notiflix';
 import { getVisibleContacts } from 'redux/contacts/contacts-selectors';
+import { getCurrentUser } from 'redux/auth/auth-operations';
 
 const ContactList = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,11 @@ const ContactList = () => {
   const removeContact = id => {
     dispatch(operations.removeContact(id));
   };
+
+  useEffect(() => {
+    dispatch(operations.fetchContacts());
+    dispatch(getCurrentUser());
+  }, [dispatch]);
 
   return (
     <ul className={s.contactList}>
@@ -22,17 +28,21 @@ const ContactList = () => {
             key={el.id}
             style={{ listStyle: 'none' }}
           >
-            {el.name}: <span>{el.phone}</span>
-            <button
-              className={s.contactListBnt}
-              type="button"
-              onClick={() => {
-                Notify.info(`${el.name} was deleted from contacts`);
-                dispatch(() => removeContact(el.id));
-              }}
-            >
-              Delete
-            </button>
+            {el.name}:
+            <div>
+              <span>{el.number}</span>
+
+              <button
+                className={s.contactListBnt}
+                type="button"
+                onClick={() => {
+                  Notify.info(`${el.name} was deleted from contacts`);
+                  dispatch(() => removeContact(el.id));
+                }}
+              >
+                Delete
+              </button>
+            </div>
           </li>
         );
       })}

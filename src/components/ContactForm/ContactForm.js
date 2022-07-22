@@ -1,28 +1,24 @@
+import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { nanoid } from 'nanoid';
 import * as operations from '../../redux/contacts/contacts-operations';
 import s from './ContactForm.module.css';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-
-  const addContact = data => {
-    dispatch(operations.addContact(data));
-  };
+  const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
 
   const handleReset = () => {
     setName('');
-    setPhone('');
+    setNumber('');
   };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    addContact({ name, phone, id: nanoid() });
+    dispatch(operations.addContact({ name, number }));
 
     handleReset();
   };
@@ -33,7 +29,7 @@ export default function ContactForm() {
         setName(value);
         break;
       case 'number':
-        setPhone(value);
+        setNumber(value);
         break;
       default:
         break;
@@ -41,9 +37,8 @@ export default function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={s.formWrap}>
+    <form onSubmit={handleSubmit} className={s.form}>
       <label className={s.label}>
-        {' '}
         Name
         <input
           className={s.input}
@@ -58,13 +53,12 @@ export default function ContactForm() {
         />
       </label>
       <label className={s.label}>
-        {' '}
         Number
         <input
           className={s.input}
           type="tel"
           name="number"
-          value={phone}
+          value={number}
           placeholder="number"
           onChange={handleChange}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -72,11 +66,21 @@ export default function ContactForm() {
           required
         />
       </label>
-      <div className={s.buttonWrap}>
-        <button type="submit" className={s.formButton}>
-          Add contact
-        </button>
-      </div>
+      <Button
+        variant="outlined"
+        color="inherit"
+        type="submit"
+        size="large"
+        sx={{
+          width: '100%',
+          height: 35,
+          fontSize: 18,
+          backgroundColor: '#fffacf',
+          color: '#1e88e5',
+        }}
+      >
+        Add contact
+      </Button>
     </form>
   );
 }
