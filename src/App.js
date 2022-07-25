@@ -1,16 +1,17 @@
 import { useDispatch } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 
 import * as operations from './redux/contacts/contacts-operations';
-import HomePage from 'pages/HomePage';
-import ContactsPage from 'pages/ContactsPage';
 import NavBar from 'components/NavBarMenu/NavBar';
-import LoginPage from 'pages/LoginPage';
-import RegisterPage from 'pages/RegisterPage';
 import { getCurrentUser } from 'redux/auth/auth-operations';
-import PrivateRoute from 'components/PrivateRoute';
-import PublicRoute from 'components/PublicRoute';
+
+const HomePage = lazy(() => import('pages/HomePage'));
+const ContactsPage = lazy(() => import('pages/ContactsPage'));
+const LoginPage = lazy(() => import('pages/LoginPage'));
+const RegisterPage = lazy(() => import('pages/RegisterPage'));
+const PrivateRoute = lazy(() => import('components/PrivateRoute'));
+const PublicRoute = lazy(() => import('components/PublicRoute'));
 
 export default function App() {
   const dispatch = useDispatch();
@@ -23,18 +24,20 @@ export default function App() {
   return (
     <div>
       <NavBar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route element={<PublicRoute />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-        </Route>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
 
-        <Route element={<PrivateRoute />}>
-          <Route path="/contacts" element={<ContactsPage />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          <Route element={<PrivateRoute />}>
+            <Route path="/contacts" element={<ContactsPage />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 }

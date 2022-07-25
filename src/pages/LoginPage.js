@@ -32,7 +32,7 @@ const LoginPage = () => {
   return (
     <div className={s.container}>
       <h2 className={s.title}>Login Form</h2>
-      <form className={s.form} onSubmit={handleSubmit} autoComplete="off">
+      <form className={s.form} onSubmit={handleSubmit}>
         <label>
           Email
           <input
